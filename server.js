@@ -32,8 +32,6 @@ let userDetails = {
   levelOfPain: "",
 };
 
-//let hospitalList = [];
-
 const port = process.env.PORT || 5000;
 
 app.get("/api/illnessNames", (req, res) => {
@@ -53,7 +51,6 @@ app.get("/api/illnessNames", (req, res) => {
         //console.log("ILLNESS LIST", hospitalList);
         const illnessNames = illnessList.map((element) => element.illness);
         // console.log("ILLNESS NAMES ", illnessNames);
-        //  res.send({ illnessNames });
         res.json({ illnessNames });
       });
     })
@@ -76,12 +73,6 @@ app.get("/api/hospitals", (req, res) => {
     response
       .on("end", () => {
         const hospitalData = JSON.parse(data)._embedded.hospitals;
-        //console.log("HOSPITAL LIST", hospitalList);
-        // res.json({ hospitalList });
-        //  console.log("in hospitals USERDETAILS", userDetails);
-
-        //userDetails.levelOfPain = "2";
-        //  console.log("USER LOP", userDetails.levelOfPain);
 
         const hospitalList = hospitalData.map((hospital) => {
           const new_w = hospital.waitingList.filter((w) => {
@@ -92,23 +83,18 @@ app.get("/api/hospitals", (req, res) => {
               return w;
             }
           });
-          //console.log("new w is ", new_w);
+
           hospital.waitingList = new_w;
-          //console.log("NEW HOSPITAL", new_hospital);
           return hospital;
         });
 
-        //console.log(hospitalList);
-
         const new_hospitalList = hospitalList.sort((hospital1, hospital2) => {
-          // console.log(hospital1.waitingList[0].averageWaitTime);
-          //console.log(hospital2.waitingList[0].averageWaitTime);
           return hospital1.waitingList[0].averageWaitTime <
             hospital2.waitingList[0].averageWaitTime
             ? -1
             : 1;
         });
-        // console.log("NEW SORTED HOSPITAL LIST", new_hospitalList);
+
         res.json({ new_hospitalList });
       })
       .on("error", (err) => {
@@ -118,7 +104,6 @@ app.get("/api/hospitals", (req, res) => {
 });
 
 app.post("/api/illnessNames", (req, res) => {
-  //console.log("inside server for post");
   const data = req.body;
   //console.log("the body is ", req.body.username);
   userDetails.username = data.username;
@@ -126,7 +111,6 @@ app.post("/api/illnessNames", (req, res) => {
   userDetails.gender = data.gender;
   userDetails.illness = data.illness;
   userDetails.levelOfPain = data.lop;
-  //console.log("USERDETAILS", userDetails);
 
   //SAVE to database
   const patientToAdd = new PatientInfo({
