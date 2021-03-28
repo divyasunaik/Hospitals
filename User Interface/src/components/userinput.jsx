@@ -74,6 +74,12 @@ function UserInput({ history }) {
           ["username"]: tempErrors.username,
           // eslint-disable-next-line
           ["dob"]: tempErrors.dob,
+          // eslint-disable-next-line
+          ["gender"]: tempErrors.dob,
+          // eslint-disable-next-line
+          ["illness"]: tempErrors.dob,
+          // eslint-disable-next-line
+          ["lop"]: tempErrors.dob,
         };
       else return {};
     });

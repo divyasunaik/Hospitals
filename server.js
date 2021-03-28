@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const mongoose = require("mongoose");
 const http = require("http");
 
@@ -6,14 +7,14 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-mongoose.connect(
-  "mongodb+srv://admin-divya:test321@cluster0.ktlsf.mongodb.net/patientinfoDB?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  }
-);
+//console.log("my env variable", process.env.DBUSER);
+const dbConnection = `mongodb+srv://${process.env.DBUSER}@cluster0.ktlsf.mongodb.net/patientinfoDB?retryWrites=true&w=majority`;
+//console.log("DB STRING", dbConnection);
+mongoose.connect(dbConnection, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+});
 
 const patientInfoSchema = new mongoose.Schema({
   fullname: String,
